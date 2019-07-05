@@ -1,13 +1,26 @@
-FROM golang:1.11
+FROM golang:1.11.4-alpine3.8 as builder
 
-WORKDIR $GOPATH/src/github.com/elgiavilla/mc_ucer
+RUN apk update && apk upgrade && \
+    apk --update add git gcc make && \
+    go get -u github.com/golang/dep/cmd/dep
+
+WORKDIR /go/src/github.com/elgiavilla/mc_user
 
 COPY . .
 
-RUN go get -d -v ./...
+RUN make engine
 
-RUN go install -v ./...
+# Distribution
+FROM alpine:latest
 
-EXPOSE 8000
+RUN apk update && apk upgrade && \
+    apk --update --no-cache add tzdata && \
+    mkdir /app 
 
-CMD ["mc_user"]
+WORKDIR /app 
+
+EXPOSE 9090
+
+COPY --from=builder /go/src/github.com/elgiavilla/mc_user/engine /app
+
+CMD /app/engine

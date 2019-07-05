@@ -38,6 +38,10 @@
   version = "1.4.2"
 
 [[constraint]]
+  name = "github.com/spf13/viper"
+  version = "1.4.0"
+
+[[constraint]]
   branch = "v2"
   name = "gopkg.in/mgo.v2"
 

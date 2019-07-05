@@ -1,0 +1,20 @@
+version: "2.3"
+services:
+  web:
+    image: mc-user:latest
+    container_name: user_management
+    ports:
+      - 9090:9090
+    environment:
+      - DB_HOST=mongodb:27017
+      - DB_NAME=dbusers
+    depends_on:
+      - mongo
+    volumes:
+      - ./config.json:/app/config.json
+  
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - 27017:27017

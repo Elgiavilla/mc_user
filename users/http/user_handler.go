@@ -21,10 +21,15 @@ func NewUserHandler(e *echo.Echo, UserService users.Service) {
 	handler := &HttpMongo{
 		MongoService: UserService,
 	}
+	e.GET("/", handler.HelloGuys)
 	e.GET("/users", handler.FindAll)
 	e.GET("/user/:id", handler.Find)
 	e.POST("/user", handler.Store)
 	e.DELETE("/user/:id", handler.Delete)
+}
+
+func(n *HttpMongo) HelloGuys(c echo.Context) error {
+	return c.JSON(http.StatusOK, ReponseError{Message: "Hello Guys"})
 }
 
 func (n *HttpMongo) FindAll(c echo.Context) error {
